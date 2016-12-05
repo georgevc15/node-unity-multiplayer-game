@@ -7,6 +7,9 @@ public class ClickMove : MonoBehaviour {
 
 	public void OnClick (Vector3 position) {
         var navPos = player.GetComponent<NavigatePosition>();
+        var netMove = player.GetComponent<NetworkMove>();
         navPos.NavigateTo(position);
+
+        netMove.OnMove(position);
 	}
 }

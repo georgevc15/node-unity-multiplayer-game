@@ -21,7 +21,7 @@ public class newtwork : MonoBehaviour {
     void onConnected(SocketIOEvent e)
     {
         Debug.Log("connected from unity side");
-        socket.Emit("move");
+        //socket.Emit("move");
     }
 
     void OnSpawned (SocketIOEvent e)
