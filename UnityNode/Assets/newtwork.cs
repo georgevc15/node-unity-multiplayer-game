@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using SocketIO;
+using System;
 
 public class newtwork : MonoBehaviour {
 
@@ -15,6 +16,7 @@ public class newtwork : MonoBehaviour {
 	    socket = GetComponent<SocketIOComponent>();
         socket.On("open", onConnected);
         socket.On("spawn", OnSpawned);
+        socket.On("move", OnMove);
 	}
 
 
@@ -28,6 +30,11 @@ public class newtwork : MonoBehaviour {
     {
         Debug.Log("spawned");
         Instantiate(playerPrefab);
+    }
+
+     void OnMove(SocketIOEvent e)
+    {
+        Debug.Log("Player is moving" + e.data);
     }
 
 }
