@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using SocketIO;
 using System;
 
@@ -9,6 +9,7 @@ public class newtwork : MonoBehaviour {
 
     public GameObject playerPrefab;
 
+    Dictionary<string, GameObject> players;
 
 	// Use this for initialization
 	void Start ()
@@ -17,6 +18,8 @@ public class newtwork : MonoBehaviour {
         socket.On("open", onConnected);
         socket.On("spawn", OnSpawned);
         socket.On("move", OnMove);
+
+        players = new Dictionary<string, GameObject> { };
 	}
 
 
@@ -28,8 +31,11 @@ public class newtwork : MonoBehaviour {
 
     void OnSpawned (SocketIOEvent e)
     {
-        Debug.Log("spawned");
-        Instantiate(playerPrefab);
+       Debug.Log("spawned"+ e.data);
+       var player = Instantiate(playerPrefab);
+
+        players.Add(e.data["id"].ToString (), player);
+        Debug.Log("count: " + players.Count);
     }
 
      void OnMove(SocketIOEvent e)
