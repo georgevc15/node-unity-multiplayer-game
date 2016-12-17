@@ -41,6 +41,24 @@ public class newtwork : MonoBehaviour {
      void OnMove(SocketIOEvent e)
     {
         Debug.Log("Player is moving" + e.data);
+
+        var position = new Vector3(GetFloatFromJson(e.data, "x"), 0, GetFloatFromJson(e.data, "y"));
+        
+        var player = players [e.data["id"].ToString()];
+
+        var navigatePos = player.GetComponent<NavigatePosition>();
+
+        navigatePos.NavigateTo(position);
+
     }
 
+    void OnRegistered(SocketIOEvent e)
+    {
+        Debug.Log("registered id " + e.data);
+    }
+
+    float GetFloatFromJson(JSONObject data, string key)
+    {
+        return float.Parse(data["x"].ToString().Replace("\"", ""));
+    }
 }
