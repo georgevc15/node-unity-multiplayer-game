@@ -7,18 +7,18 @@ var players = [];
 
 io.on('connection', function(socket) {
 	
-	var thisClientId = shortid.generate();
+	var thisPlayerId = shortid.generate();
 
-	players.push(thisClientId);
+	players.push(thisPlayerId);
 
-	console.log('Client connected, broadcasting spawn id', thisClientId);
+	console.log('Client connected, broadcasting spawn id', thisPlayerId);
 
 	
-	socket.broadcast.emit('spawn', { id: thisClientId });
+	socket.broadcast.emit('spawn', { id: thisPlayerId });
 
 	players.forEach(function(playerId) {
 		
-		if(playerId == thisClientId) 
+		if(playerId == thisPlayerId) 
 			return;
 
 		socket.emit('spawn', {id: playerId});
@@ -27,7 +27,7 @@ io.on('connection', function(socket) {
 
 
 	socket.on('move', function(data) {
-		data.id = thisClientId;
+		data.id = thisPlayerId;
 		console.log('Client moved', JSON.stringify(data));
 
 		socket.broadcast.emit('move', data);	
@@ -35,5 +35,9 @@ io.on('connection', function(socket) {
 
 	socket.on('disconnect', function() {
 		console.log('Client diconnected');
+
+		players.splice(players.indexOf(thisPlayerId), 1);
+
+		socket.broadcast.emit('disconnected', {id: thisPlayerId});
 	})
 });
