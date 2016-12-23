@@ -15,6 +15,8 @@ io.on('connection', function(socket) {
 
 	
 	socket.broadcast.emit('spawn', { id: thisPlayerId });
+	socket.broadcast.emit('requestPosition');
+
 
 	players.forEach(function(playerId) {
 		
@@ -32,6 +34,12 @@ io.on('connection', function(socket) {
 
 		socket.broadcast.emit('move', data);	
 	});
+
+		socket.on('updatePosition', function(data) {
+			console.log("update position", data);
+			data.id = thisPlayerId;	
+			socket.broadcast.emit('updatePosition', data);
+		});
 
 	socket.on('disconnect', function() {
 		console.log('Client diconnected');
