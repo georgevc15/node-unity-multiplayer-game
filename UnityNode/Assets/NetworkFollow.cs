@@ -10,6 +10,6 @@ public class NetworkFollow : MonoBehaviour {
     {
         //send position to node
         Debug.Log("sending follow player id " + Network.PLayerIdToJson(id));
-        socket.Emit("follow", new JSONObject(Network.PLayerIdToJson(id)));
+        socket.Emit("follow", Network.PLayerIdToJson(id));
     }
 }

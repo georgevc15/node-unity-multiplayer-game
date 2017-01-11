@@ -46,7 +46,7 @@ public class Network : MonoBehaviour {
 
         if (e.data["x"])
         {
-            var movePosition = new Vector3(GetFloatFromJson(e.data, "x"), 0, GetFloatFromJson(e.data, "y"));
+            Vector3 movePosition = GetVectorFromJson(e);
 
             var navigatePos = player.GetComponent<Navigator>();
 
@@ -54,12 +54,13 @@ public class Network : MonoBehaviour {
         }
     }
 
-     void OnMove(SocketIOEvent e)
+
+    void OnMove(SocketIOEvent e)
     {
         Debug.Log("Player is moving" + e.data);
 
-        var position = new Vector3(GetFloatFromJson(e.data, "x"), 0, GetFloatFromJson(e.data, "y"));
-        
+        var position = GetVectorFromJson(e);
+
         var player = spawner.FindPlayer(e.data["id"].str);
 
         var navigatePos = player.GetComponent<Navigator>();
@@ -103,7 +104,7 @@ public class Network : MonoBehaviour {
     {
         Debug.Log("updating position"+ e.data);
 
-        var position = new Vector3(GetFloatFromJson(e.data, "x"), 0, GetFloatFromJson(e.data, "y"));
+        var position = GetVectorFromJson(e);
 
         var player = spawner.FindPlayer(e.data["id"].str);
 
@@ -116,23 +117,28 @@ public class Network : MonoBehaviour {
     void OnRequestPosition(SocketIOEvent e)
     {
         Debug.Log("server is requestig position ");
-        socket.Emit("updatePosition", new JSONObject(VectorToJson(myPlayer.transform.position)));
+        socket.Emit("updatePosition", VectorToJson(myPlayer.transform.position));
     }
 
 
-    float GetFloatFromJson(JSONObject data, string key)
+    private static Vector3 GetVectorFromJson(SocketIOEvent e)
     {
-        return float.Parse(data[key].str);
+        return new Vector3(e.data["x"].n, 0, e.data["y"].n);
     }
 
 
-    public static string VectorToJson(Vector3 vector)
+    public static JSONObject VectorToJson(Vector3 vector)
     {
-        return string.Format(@"{{""x"":""{0}"", ""y"":""{1}""}}", vector.x, vector.y);
+        JSONObject j = new JSONObject(JSONObject.Type.OBJECT);
+        j.AddField("x", vector.x);
+        j.AddField("y", vector.y);
+        return j;
     }
 
-    public static string PLayerIdToJson(string id)
+    public static JSONObject PLayerIdToJson(string id)
     {
-        return string.Format(@"{{""targetId"":""{0}""}}", id);
+        JSONObject j = new JSONObject(JSONObject.Type.OBJECT);
+        j.AddField("targetId", id);
+        return j;
     }
 }
