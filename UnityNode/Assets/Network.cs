@@ -110,7 +110,22 @@ public class Network : MonoBehaviour {
 
         player.transform.position = position;
 
+    }
 
+
+    static public void Move(Vector3 position)
+    {
+        //send position to node
+        Debug.Log("sending position to node" + Network.VectorToJson(position));
+        socket.Emit("move", Network.VectorToJson(position));
+    }
+
+
+    static public void Follow(string id)
+    {
+        //send position to node
+        Debug.Log("sending follow player id " + Network.PLayerIdToJson(id));
+        socket.Emit("follow", Network.PLayerIdToJson(id));
     }
 
 
