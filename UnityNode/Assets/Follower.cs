@@ -4,7 +4,7 @@ using System;
 
 public class Follower : MonoBehaviour {
 
-    public Transform target;
+    public Targeter targeter;
 
     public float scanFrequency = 0.5f;
     public float stopFollowDistance = 2;
@@ -16,26 +16,21 @@ public class Follower : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         agent = GetComponent<NavMeshAgent>();
+        targeter = GetComponent<Targeter>();
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (isReadyToScan() && !isInRange())
+        if (isReadyToScan() && !targeter.IsInRange(stopFollowDistance))
         {
             Debug.Log("scanning nav path");
-            agent.SetDestination(target.position);
+            agent.SetDestination(targeter.target.position);
         }
-    }
-
-    private bool isInRange()
-    {
-        var distance = Vector3.Distance(target.position, transform.position);
-        return distance < stopFollowDistance;
     }
 
     bool isReadyToScan()
     {
-        return Time.time - lastScanTime > scanFrequency;
+        return Time.time - lastScanTime > scanFrequency && targeter.target;
     }
 }

@@ -4,19 +4,19 @@ using System.Collections;
 public class Navigator : MonoBehaviour {
 
     NavMeshAgent agent;
-    Follower follower;
+    Targeter targeter;
     
     // Use this for initialization
 	void Awake () {
         agent = GetComponent<NavMeshAgent> ();
-        follower = GetComponent<Follower>();
+        targeter = GetComponent<Targeter>();
 	}
 	
 	// Update is called once per frame
 	public void NavigateTo (Vector3 position) {
 
         agent.SetDestination(position);
-        follower.target = null;
+        targeter.target = null;
 	}
 
     void Update()

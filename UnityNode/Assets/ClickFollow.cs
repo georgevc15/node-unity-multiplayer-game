@@ -4,12 +4,15 @@ using System;
 
 public class ClickFollow : MonoBehaviour, IClickable {
 
-    public Follower myPlayerFollower;
+    public GameObject myPlayer;
     public NetworkEntity networkEntity;
+
+    Targeter myPlayerTargeter;
 
     void Start()
     {
         networkEntity = GetComponent<NetworkEntity>();
+        myPlayerTargeter = myPlayer.GetComponent<Targeter>();
     }
 
     public void OnClick (RaycastHit hit)
@@ -18,7 +21,7 @@ public class ClickFollow : MonoBehaviour, IClickable {
 
         Network.Follow(networkEntity.id);
 
-        myPlayerFollower.target = transform;
+        myPlayerTargeter.target = transform;
 
     }
 

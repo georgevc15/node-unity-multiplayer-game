@@ -75,11 +75,11 @@ public class Network : MonoBehaviour {
 
         var player = spawner.FindPlayer(e.data["id"].ToString());
 
-        var target = spawner.FindPlayer(e.data["targetId"].str);
+        var targetTransform = spawner.FindPlayer(e.data["targetId"].str).transform;
 
-        var follower = player.GetComponent<Follower>();
+        var target = player.GetComponent<Targeter>();
 
-        follower.target = target.transform;
+        target.target = targetTransform;
 
 
     }
