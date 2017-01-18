@@ -58,12 +58,19 @@ io.on('connection', function(socket) {
 			socket.broadcast.emit('updatePosition', data);
 		});
 
-	socket.on('disconnect', function() {
-		console.log('Client diconnected');
+		socket.on('attack', function(data) {
+			console.log("attack request", data);
+			data.id = thisPlayerId;	
+			
+			socket.broadcast.emit('attack', data);
+		});
 
-		//players.splice(players.indexOf(thisPlayerId), 1);
-		delete players[thisPlayerId];
+		socket.on('disconnect', function() {
+			console.log('Client diconnected');
 
-		socket.broadcast.emit('disconnected', {id: thisPlayerId});
+			//players.splice(players.indexOf(thisPlayerId), 1);
+			delete players[thisPlayerId];
+
+			socket.broadcast.emit('disconnected', {id: thisPlayerId});
 	})
 });

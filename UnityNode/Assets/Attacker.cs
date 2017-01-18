@@ -10,16 +10,18 @@ public class Attacker : MonoBehaviour {
 
     Targeter targeter;
 
-	// Use this for initialization
-	void Start () {
+    void Start () {
         targeter = GetComponent<Targeter>();
 	}
 	
-	// Update is called once per frame
 	void Update () {
         if (isReadyToAttack() && targeter.IsInRange(attackDistance))
         {
-            Debug.Log("attacking");
+            Debug.Log("attacking" +targeter.target.name);
+
+            var targetId = targeter.target.GetComponent<NetworkEntity>().id;
+
+            Network.Attack(targetId);
             lastAttackTime = Time.time;
         }
 	}

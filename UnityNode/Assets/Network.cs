@@ -20,12 +20,14 @@ public class Network : MonoBehaviour {
         socket.On("spawn", OnSpawned);
         socket.On("move", OnMove);
         socket.On("follow", OnFollow);
+        socket.On("attack", OnAttack);
         socket.On("registered", OnRegistered);
         socket.On("disconnected", OnDisconnected);
         socket.On("requestPosition", OnRequestPosition);
         socket.On("updatePosition", OnUpdatePosition);
 
 	}
+
 
     void OnConnected(SocketIOEvent e)
     {
@@ -73,7 +75,7 @@ public class Network : MonoBehaviour {
     {
         Debug.Log("follow  request"+ e.data);
 
-        var player = spawner.FindPlayer(e.data["id"].ToString());
+        var player = spawner.FindPlayer(e.data["id"].str);
 
         var targetTransform = spawner.FindPlayer(e.data["targetId"].str).transform;
 
@@ -81,7 +83,11 @@ public class Network : MonoBehaviour {
 
         target.target = targetTransform;
 
+    }
 
+    private void OnAttack(SocketIOEvent e)
+    {
+        Debug.Log("received attack" + e.data);
     }
 
     void OnRegistered(SocketIOEvent e)
@@ -126,6 +132,12 @@ public class Network : MonoBehaviour {
         //send position to node
         Debug.Log("sending follow player id " + Network.PLayerIdToJson(id));
         socket.Emit("follow", Network.PLayerIdToJson(id));
+    }
+
+    static public void Attack(string targetId)
+    {
+        Debug.Log("attacking player" + Network.PLayerIdToJson(targetId));
+        socket.Emit("attack", Network.PLayerIdToJson(targetId));
     }
 
 
