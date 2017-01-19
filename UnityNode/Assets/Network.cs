@@ -88,6 +88,10 @@ public class Network : MonoBehaviour {
     private void OnAttack(SocketIOEvent e)
     {
         Debug.Log("received attack" + e.data);
+
+        var targetPplayer = spawner.FindPlayer(e.data["targetId"].str);
+
+        targetPplayer.GetComponent<Hittable>().health -= 10;
     }
 
     void OnRegistered(SocketIOEvent e)

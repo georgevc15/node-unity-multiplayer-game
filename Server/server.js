@@ -62,7 +62,7 @@ io.on('connection', function(socket) {
 			console.log("attack request", data);
 			data.id = thisPlayerId;	
 			
-			socket.broadcast.emit('attack', data);
+			io.emit('attack', data);
 		});
 
 		socket.on('disconnect', function() {
