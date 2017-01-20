@@ -5,11 +5,13 @@ public class Navigator : MonoBehaviour {
 
     NavMeshAgent agent;
     Targeter targeter;
+    Animator animator;
     
     // Use this for initialization
 	void Awake () {
         agent = GetComponent<NavMeshAgent> ();
         targeter = GetComponent<Targeter>();
+        animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
