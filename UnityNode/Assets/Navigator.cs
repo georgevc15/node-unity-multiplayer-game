@@ -17,10 +17,11 @@ public class Navigator : MonoBehaviour {
 
         agent.SetDestination(position);
         targeter.target = null;
-	}
+        animator.SetBool("Attack", false);
+    }
 
     void Update()
     {
-        GetComponent<Animator>().SetFloat("Distance", agent.remainingDistance);
+        animator.SetFloat("Distance", agent.remainingDistance);
     }
 }
