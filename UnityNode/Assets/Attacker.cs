@@ -15,7 +15,7 @@ public class Attacker : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (isReadyToAttack() && targeter.IsInRange(attackDistance))
+        if (isReadyToAttack() && targeter.IsInRange(attackDistance) && !targeter.target.GetComponent<Hittable>().isDead)
         {
             Debug.Log("attacking" +targeter.target.name);
 

@@ -91,7 +91,7 @@ public class Network : MonoBehaviour {
 
         var targetPlayer = spawner.FindPlayer(e.data["targetId"].str);
 
-        targetPlayer.GetComponent<Hittable>().health -= 10;
+        targetPlayer.GetComponent<Hittable>().OnHit();
 
         var attackingPlayer = spawner.FindPlayer(e.data["id"].str);
 
