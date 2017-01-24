@@ -15,7 +15,20 @@ public class Attacker : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (isReadyToAttack() && targeter.IsInRange(attackDistance) && !targeter.target.GetComponent<Hittable>().isDead)
+
+        if (!isReadyToAttack())
+        {
+            return;
+        } 
+
+        if (isTargetDead())
+        {
+            targeter.ResetTarget();
+            return;
+        }
+           
+
+        if (targeter.IsInRange(attackDistance))
         {
             Debug.Log("attacking" +targeter.target.name);
 
@@ -26,10 +39,15 @@ public class Attacker : MonoBehaviour {
         }
 	}
 
-    bool isReadyToAttack()
-    {
-        return Time.time - lastAttackTime > attackRate && targeter.target;
-    }
+        bool isReadyToAttack()
+        {
+            return Time.time - lastAttackTime > attackRate && targeter.target;
+        }
+
+        bool isTargetDead()
+        {
+            return targeter.target.GetComponent<Hittable>().isDead;
+        }
 
 
 }

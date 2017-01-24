@@ -11,4 +11,8 @@ public class Targeter : MonoBehaviour {
         return distance < stopFollowDistance;
     }
 
+    public void ResetTarget()
+    {
+        target = null;
+    }
 }
