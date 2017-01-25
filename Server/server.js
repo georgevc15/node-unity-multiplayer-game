@@ -38,8 +38,15 @@ io.on('connection', function(socket) {
 		data.id = thisPlayerId;
 		console.log('Client moved', JSON.stringify(data));
 
-		player.x = data.x;
-		player.y = data.y;
+		player.x = data.d.x;
+		player.y = data.d.y;
+
+		delete data.c;
+
+		data.x = data.d.x;
+		data.y = data.d.y;
+
+		delete data.d;
 
 		socket.broadcast.emit('move', data);	
 	});
