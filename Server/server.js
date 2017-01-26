@@ -5,14 +5,22 @@ console.log('Server started');
 
 var players = [];
 
+var playerSpeed = 3;
+
 io.on('connection', function(socket) {
 	
 	var thisPlayerId = shortid.generate();
 
 	var player = {
 		 id: thisPlayerId,
-		 x: 0, 
-		 y: 0
+			 destination: {
+				 x: 0, 
+				 y: 0
+			},
+			lastPosition: {
+				 x: 0, 
+				 y: 0
+			}
 	};
 
 	players[thisPlayerId] = player;
@@ -38,8 +46,10 @@ io.on('connection', function(socket) {
 		data.id = thisPlayerId;
 		console.log('Client moved', JSON.stringify(data));
 
-		player.x = data.d.x;
-		player.y = data.d.y;
+		player.destination.x = data.d.x;
+		player.destination.y = data.d.y;
+
+			console.log("Distance between current and destination", lineDistance(data.c, data.d));
 
 		delete data.c;
 
@@ -47,6 +57,7 @@ io.on('connection', function(socket) {
 		data.y = data.d.y;
 
 		delete data.d;
+
 
 		socket.broadcast.emit('move', data);	
 	});
@@ -81,3 +92,16 @@ io.on('connection', function(socket) {
 			socket.broadcast.emit('disconnected', {id: thisPlayerId});
 	})
 });
+
+function lineDistance(vectorA, vectorB) {
+	var xs = 0;
+	var ys = 0;
+
+	xs = vectorB.x - vectorA.x;
+	xs = xs * xs;
+
+	ys = vectorB.y - vectorA.y;
+	ys = ys * ys;
+
+	return Math.sqrt( xs + ys );
+}
