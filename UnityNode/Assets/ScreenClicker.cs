@@ -12,6 +12,12 @@ public class ScreenClicker : MonoBehaviour {
 	void Update () {
         if (Input.GetButtonDown("Fire2"))
             Clicked();
+
+        //simulate hacking
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Network.Move(new Vector3(500, 0, 500), new Vector3(200, 0, 200));
+        }
     }
 
 

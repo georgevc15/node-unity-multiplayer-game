@@ -127,11 +127,16 @@ public class Network : MonoBehaviour {
     }
 
 
-    static public void Move(Vector3 position)
+    static public void Move(Vector3 current, Vector3 destination)
     {
         //send position to node
-        Debug.Log("sending position to node" + Network.VectorToJson(position));
-        socket.Emit("move", Network.VectorToJson(position));
+        Debug.Log("sending position to node" + Network.VectorToJson(destination));
+
+        JSONObject j = new JSONObject(JSONObject.Type.OBJECT);
+        j.AddField("c", Network.VectorToJson(current)); //current
+        j.AddField("d", Network.VectorToJson(destination)); //destionation
+
+        socket.Emit("move", j);
     }
 
 

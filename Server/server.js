@@ -20,7 +20,8 @@ io.on('connection', function(socket) {
 			lastPosition: {
 				 x: 0, 
 				 y: 0
-			}
+			},
+			lastMoveTime: 0
 	};
 
 	players[thisPlayerId] = player;
@@ -49,7 +50,22 @@ io.on('connection', function(socket) {
 		player.destination.x = data.d.x;
 		player.destination.y = data.d.y;
 
-			console.log("Distance between current and destination", lineDistance(data.c, data.d));
+		console.log("Distance between current and destination", lineDistance(data.c, data.d));
+
+		//if(requestedDistanceTraveled > travelDistanceLimit)
+			//cheating attempt
+
+		var elaspsedTime = Date.now() - player.lastMoveTime;
+
+		var travelDistanceLimit = elaspsedTime * playerSpeed / 1000;
+
+		var requestedDistanceTraveled = lineDistance(player.lastPosition, data.c);
+
+		console.log("travelDistanceLimit", travelDistanceLimit, "requestedDistanceTraveled", requestedDistanceTraveled);
+
+		player.lastMoveTime = Date.now();
+
+		player.lastPosition = data.c;
 
 		delete data.c;
 

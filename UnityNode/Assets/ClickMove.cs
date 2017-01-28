@@ -10,6 +10,6 @@ public class ClickMove : MonoBehaviour, IClickable {
 
         navigator.NavigateTo(hit.point);
 
-        Network.Move(hit.point);
+        Network.Move(player.transform.position, hit.point);
 	}
 }
